@@ -1,5 +1,6 @@
 package fr.isen.colombaudgracia.isensmartcompanion.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -65,7 +66,7 @@ fun MainScreen(innerPadding : PaddingValues) {
             modifier = Modifier
                 .fillMaxHeight()
                 .weight(0.5F),
-            text = aiResponse.value + "AI's response"
+            text = "AI's Response : \n" + aiResponse.value
         )
 
         // Row necessary to align the user input section and the submitting button
@@ -80,7 +81,9 @@ fun MainScreen(innerPadding : PaddingValues) {
                 modifier = Modifier
                     .weight(1F),
                 value = userInput.value,
-                onValueChange = {},
+                onValueChange = { newValue ->
+                    userInput.value = newValue
+                },
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = Color.Transparent,
                     unfocusedContainerColor = Color.Transparent,
@@ -91,10 +94,18 @@ fun MainScreen(innerPadding : PaddingValues) {
                 ),
             )
 
-            // Button to submit a question to the AI
+            // Button to submit a question to the AI and to display the AI's response
             OutlinedButton(
                 modifier = Modifier.background(Color.Red, RoundedCornerShape(50)),
-                onClick = {},
+                onClick = {
+                    if(userInput.value != "") {
+                        aiResponse.value = "Your question has been submitted."
+                    }
+                    else {
+                        aiResponse.value = "You have not written any question."
+                    }
+                    Toast.makeText(context, "Question submitted", Toast.LENGTH_LONG).show()
+                },
                 content = { Image(painterResource(R.drawable.send_logo), context.getString(R.string.send_logo)) }
             )
 
