@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import fr.isen.colombaudgracia.isensmartcompanion.models.EventModel
 import fr.isen.colombaudgracia.isensmartcompanion.models.TabBarItemModel
 import fr.isen.colombaudgracia.isensmartcompanion.screens.EventsScreen
 import fr.isen.colombaudgracia.isensmartcompanion.screens.HistoryScreen
@@ -33,8 +34,10 @@ class MainActivity : ComponentActivity() {
 
         enableEdgeToEdge()
 
-        fun startEventDetailActivity() {
-            val intent = Intent(this, EventDetailActivity::class.java)
+        fun startEventDetailActivity(event: EventModel) {
+            val intent = Intent(this, EventDetailActivity::class.java).apply {
+                putExtra(EventDetailActivity.EVENT_EXTRA_KEY, event)
+            }
             startActivity(intent)
         }
 
@@ -62,7 +65,7 @@ class MainActivity : ComponentActivity() {
                             MainScreen(innerPadding)
                         }
                         composable(eventsTab.title) {
-                            EventsScreen(innerPadding, { startEventDetailActivity() })
+                            EventsScreen(innerPadding) { event -> startEventDetailActivity(event) }
                         }
                         composable(historyTab.title) {
                             HistoryScreen(innerPadding)
