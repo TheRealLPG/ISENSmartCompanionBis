@@ -2,6 +2,7 @@ package fr.isen.colombaudgracia.isensmartcompanion
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -18,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import fr.isen.colombaudgracia.isensmartcompanion.api.NetworkManager
 import fr.isen.colombaudgracia.isensmartcompanion.models.EventModel
 import fr.isen.colombaudgracia.isensmartcompanion.models.TabBarItemModel
 import fr.isen.colombaudgracia.isensmartcompanion.screens.EventsScreen
@@ -25,6 +27,9 @@ import fr.isen.colombaudgracia.isensmartcompanion.screens.HistoryScreen
 import fr.isen.colombaudgracia.isensmartcompanion.screens.MainScreen
 import fr.isen.colombaudgracia.isensmartcompanion.screens.TabView
 import fr.isen.colombaudgracia.isensmartcompanion.ui.theme.ISENSmartCompanionTheme
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class MainActivity : ComponentActivity() {
 
@@ -40,6 +45,23 @@ class MainActivity : ComponentActivity() {
             }
             startActivity(intent)
         }
+
+        fun fetchEvents() {
+            val call = NetworkManager.api.getEvents()
+            call.enqueue(object : Callback<List<EventModel>> {
+                override fun onResponse(p0: Call<List<EventModel>>, p1: Response<List<EventModel>>) {
+                    p1.body()?.forEach {
+                        Log.d("request", "event : ${it.title}")
+                    }
+                }
+
+                override fun onFailure(p0: Call<List<EventModel>>, p1: Throwable) {
+                    Log.e("request", p1.message ?: "request failed")
+                }
+            })
+        }
+
+        fetchEvents()
 
         setContent {
 
