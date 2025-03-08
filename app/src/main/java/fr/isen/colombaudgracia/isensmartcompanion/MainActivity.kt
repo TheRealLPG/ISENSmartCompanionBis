@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.google.ai.client.generativeai.BuildConfig
 import fr.isen.colombaudgracia.isensmartcompanion.api.NetworkManager
 import fr.isen.colombaudgracia.isensmartcompanion.models.EventModel
 import fr.isen.colombaudgracia.isensmartcompanion.models.TabBarItemModel
@@ -32,6 +33,8 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class MainActivity : ComponentActivity() {
+
+   // val apiKey = BuildConfig.GOOGLE_AI_API_KEY
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
